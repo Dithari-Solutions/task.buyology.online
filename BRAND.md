@@ -1,7 +1,8 @@
 # Buyology brand in this app
 
-Everything here comes from *Buyology Brand Identity Guidelines* (February 2024),
-a copy of which sits next to the two repositories as `Brand Guide.pdf`.
+Everything here comes from *Buyology Brand Identity Guidelines* (February 2024).
+That PDF is not kept in this repository — ask the brand owner for the current
+copy before changing anything below.
 
 ## Colour
 
