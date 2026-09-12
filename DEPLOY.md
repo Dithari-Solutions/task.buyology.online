@@ -128,19 +128,21 @@ mixed-content surprises. It is a build-time value — changing it needs `up -d -
 
 ## 3. Point the API back at the site
 
-In `buyology-kanban-backend/.env`:
+These were set in section 1; this is what they do, and how to correct them later.
 
 ```
-FRONTEND_URL=https://task.buyology.online
-CORS_ALLOWED_ORIGINS=https://task.buyology.online
+FRONTEND_URL=https://task.buyology.online          # every link inside an e-mail
+CORS_ALLOWED_ORIGINS=https://task.buyology.online  # the one origin the API trusts
 ```
 
-`FRONTEND_URL` builds every link inside an e-mail, so a wrong value here produces
-mails that point nowhere. `CORS_ALLOWED_ORIGINS` is an exact match — `https://` and
-`http://` are different origins, and a trailing slash breaks it.
+A wrong `FRONTEND_URL` produces mails that point nowhere. `CORS_ALLOWED_ORIGINS` is
+an exact string match — `https://` and `http://` are different origins, and a
+trailing slash breaks it.
 
 ```bash
-cd ../buyology-kanban-backend && docker compose up -d
+cd ~/buyology/buyology-kanban-backend
+nano .env
+docker compose up -d      # NOT `restart` - see the note at the end
 ```
 
 ## 4. E-mail
@@ -233,8 +235,11 @@ mobile or integration client.
 
 ```bash
 docker compose logs -f                 # follow logs
-docker compose pull && docker compose up -d --build     # update
-docker compose down                    # stop (data volume survives)
+docker compose ps                      # what is running, and is it healthy
+docker compose down                    # stop (the data volume survives)
+
+# deploy a new version - run this in whichever repo changed
+git pull && docker compose up -d --build
 
 # database backup
 docker exec buyology-kanban-db pg_dump -U buyology buyology_kanban | gzip > backup-$(date +%F).sql.gz
